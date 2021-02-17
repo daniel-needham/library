@@ -19,11 +19,18 @@ body {
     "footer"
 }
 
+#library {
+    grid-area: main;
+    background-color: bisque;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
 @media (min-width: 550px){
     #site {
     height: 100%;
     gap: 0px;
-    grid-template-columns: 40vw auto;
+    grid-template-columns: 30vw auto;
     grid-template-rows: 1fr 9fr 1fr;
     grid-template-areas:
     "sidebar header"
@@ -32,21 +39,18 @@ body {
     }
 
     #library {
+        display: grid;
         grid-template-columns: 1fr 1fr 1fr;
     }
 }
+
 
 #masthead {
     grid-area: header;
     background-color: blanchedalmond;
 }
 
-#library {
-    grid-area: main;
-    background-color: bisque;
-    display: grid;
-    grid-template-columns: 1fr;
-}
+
 #sidebar {
     grid-area: sidebar;
     background-color: rgb(128, 128, 128);
@@ -57,7 +61,7 @@ body {
     background-color: aqua;
 }
 
-.books {
+.book {
     background-color:blueviolet;
 }
 
