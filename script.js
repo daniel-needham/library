@@ -1,8 +1,13 @@
 const init = () => {
     document.getElementById("button-clear").addEventListener("click", reset);
     document.getElementById("button-submit").addEventListener("click", submit);
-    let forb = document.getElementsByClassName("bin")
-    forb.addEventListener("click", bin());
+    const binButtons = document.querySelectorAll(".bin");
+    binButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            let id = button.parentElement.dataset.id;
+            bin(id);
+        })
+    })
 };
 
 const library = document.getElementById("library");
@@ -25,22 +30,20 @@ const submit = function submit() {
 }
 
 //bin button function for each myLibrary array
-function bin() {
-    console.log("del")
+function bin(id) {
+    let index = myLibrary.findIndex(k => k.id === parseInt(id)); //finds book in array based on data-id
+    myLibrary.splice(index, 1); 
+    render(myLibrary);
 }
 
-//used to give index to book based on array position
-const bookIndex = function () {
-    let length = myLibrary.length;
-    return length.toString();
-}
 
 let myLibrary = [
     {
         title: "Harry Potter",
         author: "JK Rowling",
         pages: 500,
-        readStatus: true
+        readStatus: true,
+        id: 15604043,
     }
 ];
 
@@ -50,7 +53,7 @@ function Book(title, author, pages, readStatus) {
     this.author = author
     this.pages = pages
     this.readStatus = readStatus
-    this.index = bookIndex()
+    this.id = Date.now() //creates id for each book based on time created
 
 }
 
@@ -69,8 +72,8 @@ function createBookTemplate(book) {
     library.appendChild(tile);
     for (let key in book) {
         if (book[key] === "") continue;                 //if blank skips to next
-        if (key === "index") {                          //give data-index value of array pos
-            tile.setAttribute("data-index", book[key]);
+        if (key === "id") {                          //give data-id value of array pos
+            tile.setAttribute("data-id", book[key]);
             continue;
         }
         let info = document.createElement("p");
@@ -91,6 +94,7 @@ function render(array) {
     array.forEach(arrayItem => {
         const book = createBookTemplate(arrayItem);
     });
+    init();
 }
 
 
