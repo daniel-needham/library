@@ -1,3 +1,5 @@
+
+
 const init = () => {
     document.getElementById("button-clear").addEventListener("click", reset);
     document.getElementById("button-submit").addEventListener("click", submit);
@@ -8,9 +10,16 @@ const init = () => {
             bin(id);
         })
     })
+    const readToggle = document.querySelectorAll(".switch");
+    readToggle.forEach((toggle) => {
+        toggle.addEventListener("change", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            let id = toggle.parentElement.dataset.id;
+            toggleRead(id);
+        })
+    })
 };
-
-const library = document.getElementById("library");
 
 //form reset button
 const reset = function reset(ev) {
@@ -25,7 +34,7 @@ const submit = function submit() {
     let pages = document.getElementById("pages");
     let read = document.getElementById("read");
     addBookToLibrary(title, author, pages, read);
-    console.log("ok");
+    
 
 }
 
@@ -34,8 +43,16 @@ function bin(id) {
     let index = myLibrary.findIndex(k => k.id === parseInt(id)); //finds book in array based on data-id
     myLibrary.splice(index, 1); 
     render(myLibrary);
+    init();
 }
 
+// function added to prototype to toggle read status
+function toggleRead(id) {
+    let index = myLibrary.findIndex(k => k.id === parseInt(id));
+    myLibrary[index].readStatus ? myLibrary[index].readStatus = false :
+    myLibrary[index].readStatus = true;
+    console.log(myLibrary[index].readStatus);
+}
 
 let myLibrary = [
     {
@@ -51,17 +68,20 @@ let myLibrary = [
 function Book(title, author, pages, readStatus) {
     this.title = title
     this.author = author
-    this.pages = pages
+    this.pages = pages + " pages"
     this.readStatus = readStatus
     this.id = Date.now() //creates id for each book based on time created
-
 }
 
 function addBookToLibrary(title, author, pages, readStatus) {
     let newBook = new Book(title, author, pages, readStatus);
     myLibrary.push(newBook)
     render(myLibrary);
+    init();
 }
+
+const library = document.getElementById("library");
+
 
 //creates book in DOM from object
 function createBookTemplate(book) {
@@ -71,18 +91,18 @@ function createBookTemplate(book) {
     tile.classList.add("book");
     library.appendChild(tile);
     for (let key in book) {
-        if (book[key] === "") continue;                 //if blank skips to next
-        if (key === "id") {                          //give data-id value of array pos
+        if (book[key] === "") continue; //if blank skips to next         
+        if (key === "id") {             //give data-id value of array pos
             tile.setAttribute("data-id", book[key]);
+            continue;
+        }
+        if (key === "readStatus") {
+            //asigns the toggle to true if book is read
+            if (book[key]) tile.querySelector(".switchy").setAttribute("checked", "checked");
             continue;
         }
         let info = document.createElement("p");
         info.setAttribute("class", "info");
-        if (key === "pages") {
-            info.textContent = `${book[key]} pages`;
-            tile.appendChild(info);
-            continue;
-        }
         info.textContent = `${book[key]}`;
         tile.appendChild(info);
     }
@@ -94,7 +114,6 @@ function render(array) {
     array.forEach(arrayItem => {
         const book = createBookTemplate(arrayItem);
     });
-    init();
 }
 
 
@@ -102,3 +121,4 @@ function render(array) {
 document.addEventListener("DOMContentLoaded", init);    //initializes event listeners for form
 
 render(myLibrary);
+
