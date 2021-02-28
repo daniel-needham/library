@@ -1,5 +1,3 @@
-
-
 const init = () => {
     document.getElementById("button-clear").addEventListener("click", reset);
     document.getElementById("button-submit").addEventListener("click", submit);
@@ -34,8 +32,6 @@ const submit = function submit() {
     let pages = document.getElementById("pages");
     let read = document.getElementById("read");
     addBookToLibrary(title, author, pages, read);
-    
-
 }
 
 //bin button function for each myLibrary array
@@ -44,6 +40,7 @@ function bin(id) {
     myLibrary.splice(index, 1); 
     render(myLibrary);
     init();
+    saveData();
 }
 
 // function added to prototype to toggle read status
@@ -52,16 +49,17 @@ function toggleRead(id) {
     myLibrary[index].readStatus ? myLibrary[index].readStatus = false :
     myLibrary[index].readStatus = true;
     console.log(myLibrary[index].readStatus);
+    saveData();
 }
 
 let myLibrary = [
-    {
-        title: "Harry Potter",
-        author: "JK Rowling",
-        pages: 500,
-        readStatus: true,
-        id: 15604043,
-    }
+    // {
+    //     title: "Harry Potter",
+    //     author: "JK Rowling",
+    //     pages: 500,
+    //     readStatus: true,
+    //     id: 15604043,
+    // }
 ];
 
 
@@ -78,6 +76,7 @@ function addBookToLibrary(title, author, pages, readStatus) {
     myLibrary.push(newBook)
     render(myLibrary);
     init();
+    saveData();
 }
 
 const library = document.getElementById("library");
@@ -116,9 +115,30 @@ function render(array) {
     });
 }
 
+//function to save to local storage
+function saveData() {
+    if (typeof(Storage) !== "undefined") {
+        window.localStorage.setItem("library", JSON.stringify(myLibrary))
+        } else {
+        alert("Local storage is not supported - changes will not be saved!")
+    }
+    
+}
 
+//function to check local storage and pull library at start
+function loadData() {
+    if (typeof(Storage) !== "undefined") {
+        myLibrary = JSON.parse(window.localStorage.getItem("library"));
+        } else {
+        myLibrary = [];
+    }
+}
+
+loadData();
+
+render(myLibrary);
 
 document.addEventListener("DOMContentLoaded", init);    //initializes event listeners for form
 
-render(myLibrary);
+
 
