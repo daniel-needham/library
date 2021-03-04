@@ -25,12 +25,15 @@ const reset = function reset(ev) {
     document.getElementById("form-add").reset();
 }
 
+let storage;
 //form submit button
 const submit = function submit() {
-    let title = document.getElementById("title");
-    let author = document.getElementById("author");
-    let pages = document.getElementById("pages");
-    let read = document.getElementById("read");
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
+    let pages = document.getElementById("pages").value;
+    let read = document.getElementById("read").checked;
+    storage = read;
+    console.log(title, author, pages, read);
     addBookToLibrary(title, author, pages, read);
 }
 
@@ -66,7 +69,7 @@ let myLibrary = [
 function Book(title, author, pages, readStatus) {
     this.title = title
     this.author = author
-    this.pages = pages + " pages"
+    this.pages = pages + " pages."
     this.readStatus = readStatus
     this.id = Date.now() //creates id for each book based on time created
 }
@@ -86,6 +89,7 @@ const library = document.getElementById("library");
 function createBookTemplate(book) {
     let tileTemp = document.querySelector("#template");
     let tile = tileTemp.cloneNode(true);
+    let tileContent = tile.querySelector(".content")
     tile.id = "";
     tile.classList.add("book");
     library.appendChild(tile);
@@ -101,9 +105,15 @@ function createBookTemplate(book) {
             continue;
         }
         let info = document.createElement("p");
+        if (key === "title") { 
+            info.setAttribute("class", "title");
+            info.textContent = `${book[key]}`;
+            tileContent.appendChild(info);
+            continue; 
+        }
         info.setAttribute("class", "info");
         info.textContent = `${book[key]}`;
-        tile.appendChild(info);
+        tileContent.appendChild(info);
     }
 }
 
@@ -139,6 +149,3 @@ loadData();
 render(myLibrary);
 
 document.addEventListener("DOMContentLoaded", init);    //initializes event listeners for form
-
-
-
