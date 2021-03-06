@@ -56,13 +56,7 @@ function toggleRead(id) {
 }
 
 let myLibrary = [
-    {
-        title: "Harry Potter and Prisoner of Test Book",
-        author: "JK Rowling",
-        pages: 500,
-        readStatus: true,
-        id: 15604043,
-    }
+    
 ];
 
 
@@ -137,10 +131,16 @@ function saveData() {
 
 //function to check local storage and pull library at start
 function loadData() {
-    if (typeof(Storage) !== "undefined") {
+    if (JSON.parse(window.localStorage.getItem("library"))) {
         myLibrary = JSON.parse(window.localStorage.getItem("library"));
         } else {
-        myLibrary = [];
+        myLibrary = [{
+            title: "Harry Potter and Prisoner of Test Book",
+            author: "JK Rowling",
+            pages: 500 + " pages.",
+            readStatus: true,
+            id: 15604043,
+        }];
     }
 }
 
