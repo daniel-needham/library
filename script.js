@@ -134,18 +134,12 @@ function loadData() {
     if (JSON.parse(window.localStorage.getItem("library"))) {
         myLibrary = JSON.parse(window.localStorage.getItem("library"));
         } else {
-        myLibrary = [{
-            title: "Harry Potter and Prisoner of Test Book",
-            author: "JK Rowling",
-            pages: 500 + " pages.",
-            readStatus: true,
-            id: 15604043,
-        }];
+        addBookToLibrary("Harry Potter and the Test Book", "JK Rowling", 500, true);
     }
 }
-
-loadData();
 
 render(myLibrary);
 
 document.addEventListener("DOMContentLoaded", init);    //initializes event listeners for form
+
+loadData();
