@@ -56,13 +56,13 @@ function toggleRead(id) {
 }
 
 let myLibrary = [
-    // {
-    //     title: "Harry Potter",
-    //     author: "JK Rowling",
-    //     pages: 500,
-    //     readStatus: true,
-    //     id: 15604043,
-    // }
+    {
+        title: "Harry Potter and Prisoner of Test Book",
+        author: "JK Rowling",
+        pages: 500,
+        readStatus: true,
+        id: 15604043,
+    }
 ];
 
 
